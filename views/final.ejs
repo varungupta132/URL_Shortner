@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URL Shortened!</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 40px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+    .icon { font-size: 3rem; margin-bottom: 12px; }
+    h1 { color: #1a1a2e; margin-bottom: 8px; }
+    p { color: #666; margin-bottom: 24px; }
+    .url-box {
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    .url-box span { font-size: 0.75rem; color: #888; display: block; margin-bottom: 4px; }
+    .url-box a {
+      color: #4f46e5;
+      font-weight: 600;
+      word-break: break-all;
+      text-decoration: none;
+    }
+    .url-box a:hover { text-decoration: underline; }
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 28px;
+      background: #4f46e5;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #4338ca; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">✅</div>
+    <h1>URL Shortened!</h1>
+    <p>Your short link is ready to share.</p>
+
+    <div class="url-box">
+      <span>Original URL</span>
+      <a href="<%= url %>" target="_blank"><%= url %></a>
+    </div>
+
+    <div class="url-box">
+      <span>Short URL</span>
+      <a href="http://localhost:3000/<%= gene %>" target="_blank">http://localhost:3000/<%= gene %></a>
+    </div>
+
+    <a href="/" class="btn">Shorten Another</a>
+  </div>
+</body>
+</html>
