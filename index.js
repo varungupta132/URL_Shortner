@@ -14,8 +14,13 @@ let conn = null;
 async function connectDB() {
   if (conn && mongoose.connection.readyState === 1) return;
   conn = await mongoose.connect(process.env.MONGODB_URI, {
-    serverSelectionTimeoutMS: 10000,
-    socketTimeoutMS: 10000,
+    serverSelectionTimeoutMS: 30000,
+    socketTimeoutMS: 30000,
+    connectTimeoutMS: 30000,
+    maxPoolSize: 1,
+    minPoolSize: 0,
+    maxIdleTimeMS: 10000,
+    bufferCommands: false,
   });
 }
 

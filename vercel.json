@@ -3,7 +3,8 @@
   "builds": [
     {
       "src": "index.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": { "maxLambdaSize": "15mb" }
     }
   ],
   "routes": [
@@ -11,6 +12,5 @@
       "src": "/(.*)",
       "dest": "index.js"
     }
-  ],
-  "regions": ["bom1"]
+  ]
 }
