@@ -9,19 +9,22 @@ const short = require("shortid");
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
-// Ensure DB is connected before handling requests
-let isConnected = false;
+// Cached connection for serverless
+let conn = null;
 async function connectDB() {
-  if (isConnected) return;
-  await mongoose.connect(process.env.MONGODB_URI);
-  isConnected = true;
+  if (conn && mongoose.connection.readyState === 1) return;
+  conn = await mongoose.connect(process.env.MONGODB_URI, {
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 10000,
+  });
 }
 
-// Debug route - remove after fixing
+// Debug route
 app.get("/debug", (req, res) => {
   res.json({
     mongoUri: process.env.MONGODB_URI ? "SET ✓" : "NOT SET ✗",
     nodeEnv: process.env.NODE_ENV || "not set",
+    mongoState: mongoose.connection.readyState,
   });
 });
 
@@ -31,7 +34,8 @@ app.get("/", async (req, res) => {
     await connectDB();
     res.render("form");
   } catch (err) {
-    res.status(500).send("DB connection failed: " + err.message);
+    console.error("GET / error:", err.message);
+    res.status(500).send("Error: " + err.message);
   }
 });
 
@@ -46,11 +50,12 @@ app.post("/submit", async (req, res) => {
     }
 
     const gene = short.generate();
-    await model.insertMany({ ourl: url, surl: gene });
+    await model.create({ ourl: url, surl: gene });
     console.log(`Shortened: ${url} → ${gene}`);
 
     res.render("final", { url, gene });
   } catch (err) {
+    console.error("POST /submit error:", err.message);
     res.status(500).send("Error: " + err.message);
   }
 });
@@ -63,13 +68,9 @@ app.get("/:id", async (req, res) => {
     if (!ori) return res.status(404).send("Short URL not found");
     res.redirect(ori.ourl);
   } catch (err) {
+    console.error("GET /:id error:", err.message);
     res.status(500).send("Something went wrong: " + err.message);
   }
 });
-
-// Export for Vercel (serverless), also listen locally
-if (process.env.NODE_ENV !== "production") {
-  app.listen(3000, () => console.log("Server running at http://localhost:3000"));
-}
 
 module.exports = app;
