@@ -57,7 +57,7 @@ app.post("/submit", async (req, res) => {
     await model.create({ ourl: url, surl: gene });
     console.log(`Shortened: ${url} → ${gene}`);
 
-    res.render("final", { url, gene });
+    res.render("final", { url, gene, req });
   } catch (err) {
     console.error("POST /submit error:", err.message);
     res.status(500).send("Error: " + err.message);

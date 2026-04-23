@@ -68,7 +68,7 @@
 
     <div class="url-box">
       <span>Short URL</span>
-      <a href="http://localhost:3000/<%= gene %>" target="_blank">http://localhost:3000/<%= gene %></a>
+      <a href="<%= req.protocol + '://' + req.get('host') + '/' + gene %>" target="_blank"><%= req.protocol + '://' + req.get('host') + '/' + gene %></a>
     </div>
 
     <a href="/" class="btn">Shorten Another</a>
