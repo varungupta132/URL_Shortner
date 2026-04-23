@@ -5,8 +5,10 @@ const model = require("./model/user");
 const app = express();
 const val = require("valid-url");
 const short = require("shortid");
+const path = require("path");
 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 
 // Cached connection for serverless
@@ -18,9 +20,6 @@ async function connectDB() {
     socketTimeoutMS: 30000,
     connectTimeoutMS: 30000,
     maxPoolSize: 1,
-    minPoolSize: 0,
-    maxIdleTimeMS: 10000,
-    bufferCommands: false,
   });
 }
 
