@@ -17,6 +17,14 @@ async function connectDB() {
   isConnected = true;
 }
 
+// Debug route - remove after fixing
+app.get("/debug", (req, res) => {
+  res.json({
+    mongoUri: process.env.MONGODB_URI ? "SET ✓" : "NOT SET ✗",
+    nodeEnv: process.env.NODE_ENV || "not set",
+  });
+});
+
 // Home - show form
 app.get("/", async (req, res) => {
   try {
